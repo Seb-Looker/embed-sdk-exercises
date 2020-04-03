@@ -40,12 +40,11 @@ Turn on Embed Authentication.
 
 In order to view your embed secret you must reset it. Copy the secret to a secure place.
 
-`PLEASE NOTE THAT THIS WILL RESET THE SECRET FOR THE WHOLE INSTANCE, FOR EVERYONE AND EVERYTHING RUNNING ON THIS INSTANCE.`
-`IT WILL BREAK ANY PREVIOUS EMBEDDING OF LOOKER.`
+**PLEASE NOTE THAT THIS WILL RESET THE SECRET FOR THE WHOLE INSTANCE, FOR EVERYONE AND EVERYTHING RUNNING ON THIS INSTANCE. IT WILL BREAK ANY PREVIOUS EMBEDDING OF LOOKER.**
 
-`If other colleagues have already gone through this training, please ask them for the secret instead`
-`If your company already has different embedded projects running on this instance, please ask the appropriate person for the secret.`
-`If embed authentication was already turned on, it is more than likely that someone in your company is already using a secret and can share it with you.`
+**If other colleagues have already gone through this training, please ask them for the secret instead`**
+**If your company already has different embedded projects running on this instance, please ask the appropriate person for the secret.**
+**If embed authentication was already turned on, it is more than likely that someone in your company is already using a secret and can share it with you.**
 
 Navigate to your .env and update your Looker values for `LOOKERSDK_BASE_URL`, `LOOKER_EMBED_HOST` and `LOOKER_EMBED_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
 
@@ -113,6 +112,7 @@ It should say:
 
 Return to your browser to https://embed.demo:8080 and refresh the page. You should see an API response populate under the dashboard
 
+```
 {
   "id": 1537,
   "first_name": "Pat",
@@ -126,6 +126,7 @@ Return to your browser to https://embed.demo:8080 and refresh the page. You shou
     "show_details": true
   }
 }
+```
 
 Webpage pops up, see "Your Connection is Not Private".  This is OK - click advanced and continue.
 
