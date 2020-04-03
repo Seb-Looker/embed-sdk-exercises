@@ -4,79 +4,57 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>SKO2020 Embed SDK Tutorial</title>
-  <link rel="icon" type="image/png" href="https://looker.com/favicon.ico"/>
+  <title>Looker Embed SDK Demo</title>
   <script src="demo.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
-  <script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
   <style type="text/css">
-    body { text-align: center; }
-    #demo-dashboard {
-      height: 90%;
-      width: 90%;
-      margin: auto;
+    body {
+      text-align: center;
+    }
+    #dashboard {
+      width: 90vw;
+      height: 70vh;
+      margin: 40px auto;
+    }
+    #dashboard-state {
+      height: 30px;
+    }
+    #look {
+      width: 90vw;
+      height: 70vh;
+      margin: 40px auto;
+    }
+    #look-state {
+      height: 30px;
     }
     .looker-embed {
-      height: 100%;
       width: 100%;
+      height: 100%;
     }
-    #logo { width: 100px; }
-    #select-dropdown { width: 300px; }
-    .ui.dropdown>.text { display: inline }
-    #topmenu { background-color: #FFFF; }
   </style>
 </head>
 <body>
-  <div id="topmenu" class="ui top three item borderless menu">
-    <div class="item">
-      <img id="logo" >
-    </div>
-    <div class="item">
-      <div id="select-dropdown" class="ui selection violet dropdown">
-        <input type="hidden" name="state">
-        <i id="dropdown-icon" class="chart line icon violet" style="display: none;"></i>
-        <div id="dropdown-icon-loader" class="ui active mini inline loader"></div>
-        <div id="dropdown-text" class="default text">States</div>
-        <div id="dropdown-menu" class="menu">
-          <div class="item" data-value="">Top 10 States...</div>
-        </div>
-      </div>
-      <div id="dashboard-state"></div>
-      <div id="dropdown-selected"></div>
-      <div id="select-dashboard" class="ui selection violet dropdown">
-        <input type="hidden" name="dashboard">
-        <i class="chart line icon violet" style="display: none;"></i>
-        <div class="default text">Dashboards</div>
-        <div id="dashboard-dropdown-menu" class="menu">
-          <div class="item" data-value="">Select a dashboard...</div>
-        </div>
-      </div>
-    </div>
-    <div class="right menu">
-      <div class="item">
-        <i id="vis-swap" data-value="1" class="big chart pie icon violet"></i>
-        <i id="table-swap" data-value="0" style="cursor: pointer;" class="big table icon violet"></i>
-        <i class="big wrench icon violet"></i>
-        <i class="big question circle icon violet"></i>
-        <i class="big user circle icon violet"></i>
-      </div>
-    </div>
+  <h1>Looker Embed SDK Demo Page</h1>
+  <div id="controls">
+    <label for="state">State: </label>
+    <select id="state">
+      <option value="">Select...</option>
+      <option value="California" selected>California</option>
+      <option value="Illinois">Illinois</option>
+      <option value="Minnesota">Minnesota</option>
+    </select>
+    <button id="run">Run</button>
   </div>
   <div id="demo-dashboard">
-    <div  id="dashboard"></div>
+    <div id="dashboard-state">Loading...</div>
+    <div id="dashboard"></div>
   </div>
-  <script>
-    $('#select-dropdown')
-      .dropdown()
-    ;
-    $('#select-dashboard')
-      .dropdown()
-    ;
-
-    </script>
+  <hr />
+  <div>
+    <pre style="text-align: left;" id="api"></pre>
+  </div>
+  <hr />
+  <div id="demo-look">
+    <div id="look-state">Loading...</div>
+   <div id="look"></div>
 </body>
 </html>

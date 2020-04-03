@@ -1,5 +1,10 @@
 # Section 1: Familiarity with the Embed SDK
 
+We will be running a local web server to host your Looker embedded dashboard.
+One simple way to do so is to use Node.js
+
+[Download and install Node.npmjs](https://nodejs.org/en/download/)
+
 [Download VS Code here](https://code.visualstudio.com/download) (do it, it is great)
 
 When you open up VS Code, press Command+Shift+P, type in `Shell Command: Install ...` and choose the option `Shell Command: Install 'code' command in PATH`
@@ -7,8 +12,8 @@ When you open up VS Code, press Command+Shift+P, type in `Shell Command: Install
 Move to your terminal and we're going to clone a different repository based off of the embed sdk
 
 ```
-git clone https://github.com/bryan-at-looker/embed-sdk-sko
-cd embed-sdk-sko
+git clone https://github.com/Seb-Looker/embed-sdk-exercises
+cd embed-sdk-exercises
 git checkout section1
 code .
 ```
@@ -22,20 +27,48 @@ Now that you've got a pared down version of the Embed SDK installed; you will ne
 
 ### .env: Environment variables
 
-On your command line in the integrated terminal (VS Code); rename a couple files
+On your command line in the integrated terminal (VS Code); rename and modify a few files
 
 ```
 mv .env.example .env
-mv ./demo/demo_user.json.example ./demo/demo_user.json
 ```
+
+Head over to your Looker instance, navigate to Admin > Platform Embed on your Looker instance. This requires admin privileges.
+The demo server runs by default at http://localhost:8080. By adding that address to the Embedded Domain Whitelist you can enable the demo to receive messages from Looker.
+
+Turn on Embed Authentication.
+
+In order to view your embed secret you must reset it. Copy the secret to a secure place.
+
+`PLEASE NOTE THAT THIS WILL RESET THE SECRET FOR THE WHOLE INSTANCE, FOR EVERYONE AND EVERYTHING RUNNING ON THIS INSTANCE.`
+`IT WILL BREAK ANY PREVIOUS EMBEDDING OF LOOKER.`
+
+`If other colleagues have already gone through this training, please ask them for the secret instead`
+`If your company already has different embedded projects running on this instance, please ask the appropriate person for the secret.`
+`If embed authentication was already turned on, it is more than likely that someone in your company is already using a secret and can share it with you.`
+
+Navigate to your .env and update your Looker values for `LOOKERSDK_BASE_URL`, `LOOKER_EMBED_HOST` and `LOOKER_EMBED_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
+
+Head back to your Looker instance, navigate to Admin > Users and create your API 3 keys.  
+Navigate to your .env and fill in your API id and secret in `LOOKERSDK_CLIENT_ID`, `LOOKERSDK_CLIENT_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
+
 
 The Embed SDK uses `dotenv` a common Node package that will look for a `.env` and load them up for you.  For light reading on environment variables you can read [this article](https://medium.com/chingu/an-introduction-to-environment-variables-and-how-to-use-them-f602f66d15fa).
 
 In short, we use environment variables as a way to configure the server to store necessary information **on startup** like the host name and API credentials.
 
-Head over to the SKO instance, [https://sko2020.dev.looker.com/admin/users](https://sko2020.dev.looker.com/admin/users), and create your API 3 keys.  Navigate to your .env and fill in your API id and secret in `LOOKERSDK_CLIENT_ID`, `LOOKERSDK_CLIENT_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
+### demo_user.json: Configure your embed user
 
-Now that the .env is configured, lets start up the server.  Note that you will see error messages when `npm install` runs.  This is expected and will be fixed with the subsequent `awk` command. Run the following commands in your VS Code in the integrated terminal.
+Navigate to your /demo/demo_user.json file and update the line `"models": ["powered_by", "thelook"],` to be the name of the models the dashboard you want to embed uses. If you are following along all these exercises, please use thelook.
+
+Navigate to your /demo/demo_config.ts file and update the lines `export const lookerHost = 'demo.looker.com'` to your Looker partner instance URL and `export const dashboardId = 159` to the dashboardId of the dashboard you want to embed. If you are following along all these exercises, please use Business Pulse. You can find the dashboardId by opening the dashboard in Looker. The dashboardId is the number at the end of the URL (for example: https://demo.looker.com/dashboards/100734)
+
+This configuration is used by the Embed SDK to create an SSO URL ([docs](https://docs.looker.com/reference/embedding/sso-embed)) for an application user which will see Looker dashboards, looks and explores.
+
+
+## Get the web server running
+
+Now that the .env and the demo files are configured, lets start up the server.  Note that you will see error messages when `npm install` runs.  This is expected and will be fixed with the subsequent `awk` command. Run the following commands in your VS Code in the integrated terminal.
 
 ```
 npm install
@@ -43,6 +76,8 @@ npm install
 ## fix the bug for StringDecoder in readable-stream:
 
 awk '{gsub(/: StringDecoder/,": any")}1' ./node_modules/@types/readable-stream/index.d.ts > tmp.txt && mv ./tmp.txt ./node_modules/@types/readable-stream/index.d.ts
+
+## Add a redirect from embed.demo to localhost. This is necessary for CORS
 
 echo -e '\n127.0.0.1 embed.demo\n' | sudo tee -a /etc/hosts
 
@@ -52,23 +87,50 @@ npm start
 
 ```
 
+This should get your dashboard up and running, but your API call sdk.me() will fail because of CORS.
+
+In a new terminal window, clone the cors-anywhere package and get it running.
+
+```
+cd ~
+git clone https://github.com/Rob--W/cors-anywhere.git
+cd cors-anywhere
+npm install
+
+## optional fix the vulnerabilities
+npm audit fix --force
+
+## change the port
+export PORT=9090
+
+## start the server
+node server.js
+```
+
+It should say:
+
+> Running CORS Anywhere on 0.0.0.0:9090
+
+Return to your browser to https://embed.demo:8080 and refresh the page. You should see an API response populate under the dashboard
+
+{
+  "id": 1537,
+  "first_name": "Pat",
+  "last_name": "Embed",
+  "avatar_url": "https://gravatar.lookercdn.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=156&d=blank",
+  "display_name": "Pat Embed",
+  "url": "https://localhost:19999/api/3.1/users/1537",
+  "can": {
+    "show": true,
+    "index": true,
+    "show_details": true
+  }
+}
+
 Webpage pops up, see "Your Connection is Not Private".  This is OK - click advanced and continue.
 
 Our webpage is simply a header at this point.  Let's start configuring the frontend.
 
-
-###  demo_config.ts: Frontend Configs
-
-In VSCode, open the file `demo_config.ts` within the demo folder and change your dashboard_id to 5.
-
-```js
-export const dashboard_id = 5
-```
-Save the file (Cmd S shortcut)
-
-This configuration is used by the Embed SDK to create an SSO URL ([docs](https://docs.looker.com/reference/embedding/sso-embed)) for an application user which will see Looker dashboards, looks and explores.
-
-Note that hot reload is enabled:  if you change a configuration file that affects the frontend, you should see the effects of that change immediately - the browser will auto-refresh. In this case, now that a dashboard id has been specified, our dashboard (albeit a tiny one!) is rendered.
 
 ## CSS Intro
 An important part of web development is styling the pages and how they interact with your browser. The basics being how page elements are sized, shaped, positioned and styled through Cascading Style Sheets (CSS). We have a tiny dashboard because it has not been told to be bigger. We will use CSS to increase the size of the dashboard - effectively making the iframe bigger.
