@@ -42,14 +42,16 @@ In order to view your embed secret you must reset it. Copy the secret to a secur
 
 **PLEASE NOTE THAT THIS WILL RESET THE SECRET FOR THE WHOLE INSTANCE, FOR EVERYONE AND EVERYTHING RUNNING ON THIS INSTANCE. IT WILL BREAK ANY PREVIOUS EMBEDDING OF LOOKER.**
 
-**If other colleagues have already gone through this training, please ask them for the secret instead`**
+**If other colleagues have already gone through this training, please ask them for the secret instead.**
+
 **If your company already has different embedded projects running on this instance, please ask the appropriate person for the secret.**
+
 **If embed authentication was already turned on, it is more than likely that someone in your company is already using a secret and can share it with you.**
 
-Navigate to your .env and update your Looker values for `LOOKERSDK_BASE_URL`, `LOOKER_EMBED_HOST` and `LOOKER_EMBED_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
+Navigate back to your .env and update your Looker values for `LOOKERSDK_BASE_URL`, `LOOKER_EMBED_HOST` and `LOOKER_EMBED_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
 
 Head back to your Looker instance, navigate to Admin > Users and create your API 3 keys.  
-Navigate to your .env and fill in your API id and secret in `LOOKERSDK_CLIENT_ID`, `LOOKERSDK_CLIENT_SECRET`. (To open a file in VSCode, simply click the filename on the left pane)
+Navigate back to your .env file and fill in your API id and secret in `LOOKERSDK_CLIENT_ID`, `LOOKERSDK_CLIENT_SECRET`. 
 
 
 The Embed SDK uses `dotenv` a common Node package that will look for a `.env` and load them up for you.  For light reading on environment variables you can read [this article](https://medium.com/chingu/an-introduction-to-environment-variables-and-how-to-use-them-f602f66d15fa).
@@ -58,7 +60,7 @@ In short, we use environment variables as a way to configure the server to store
 
 ### demo_user.json: Configure your embed user
 
-Navigate to your /demo/demo_user.json file and update the line `"models": ["powered_by", "thelook"],` to be the name of the models the dashboard you want to embed uses. If you are following along all these exercises, please use thelook.
+Navigate to your /demo/demo_user.json file and update the line `"models": ["powered_by", "thelook"],` to be the name of the models the dashboard you want to embed uses. If you are following along all these exercises, please include `"thelook"`.
 
 Navigate to your /demo/demo_config.ts file and update the lines `export const lookerHost = 'demo.looker.com'` to your Looker partner instance URL and `export const dashboardId = 159` to the dashboardId of the dashboard you want to embed. If you are following along all these exercises, please use Business Pulse. You can find the dashboardId by opening the dashboard in Looker. The dashboardId is the number at the end of the URL (for example: https://demo.looker.com/dashboards/100734)
 
