@@ -62,7 +62,7 @@ In short, we use environment variables as a way to configure the server to store
 
 Navigate to your /demo/demo_user.json file and update the line `"models": ["powered_by", "thelook"],` to be the name of the models the dashboard you want to embed uses. If you are following along all these exercises, please include `"thelook"`.
 
-Navigate to your /demo/demo_config.ts file and update the lines `export const lookerHost = 'demo.looker.com'` to your Looker partner instance URL and `export const dashboardId = 159` to the dashboardId of the dashboard you want to embed. If you are following along all these exercises, please use Business Pulse. You can find the dashboardId by opening the dashboard in Looker. The dashboardId is the number at the end of the URL (for example: https://demo.looker.com/dashboards/100734)
+Navigate to your /demo/demo_config.ts file and update the lines `export const lookerHost = 'XXXXXX.looker.com'` to your Looker partner instance URL and `export const dashboardId = 159` to the dashboardId of the dashboard you want to embed. If you are following along all these exercises, please use Business Pulse. You can find the dashboardId by opening the dashboard in Looker. The dashboardId is the number at the end of the URL (for example: https://demo.looker.com/dashboards/100734)
 
 This configuration is used by the Embed SDK to create an SSO URL ([docs](https://docs.looker.com/reference/embedding/sso-embed)) for an application user which will see Looker dashboards, looks and explores.
 
